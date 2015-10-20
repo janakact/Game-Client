@@ -14,11 +14,12 @@ namespace Game_Client
     {
         private NetworkClient networkClient;
         private string[,] grid;
+        private String [] players;
 
         public Game()
         {
             InitializeComponent();
-
+            players = new String[5];
             grid = new string[10, 10];
             for(int i =0; i<10;i++)
             {
@@ -27,9 +28,9 @@ namespace Game_Client
 
       
             }
-            grid[1, 2] = Constant.WATER;
-            grid[5, 3] = Constant.STONE;
-            grid[9, 9] = Constant.BRICK;
+            //grid[1, 2] = Constant.WATER;
+            //grid[5, 3] = Constant.STONE;
+            //grid[9, 9] = Constant.BRICK;
 
             networkClient = new NetworkClient(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
             networkClient.OnRecieve += onRecieve;
@@ -100,7 +101,35 @@ namespace Game_Client
             {
                 //Game init 
                 String[] arr = data.Split(':');
-                //Update the grid
+
+                //Add players---------------------
+
+
+
+                //Add bricks,stones,water------------
+                String[] brickCordinates = arr[2].Split(';');
+                for (int i = 0; i < brickCordinates.Length; i++) {
+                    int x = int.Parse(brickCordinates[i][0].ToString());
+                    int y = int.Parse(brickCordinates[i][2].ToString());
+                    grid[x, y] = Constant.BRICK;
+                }
+
+                String[] stoneCordinates = arr[3].Split(';');
+                for (int i = 0; i < stoneCordinates.Length; i++)
+                {
+                    int x = int.Parse(stoneCordinates[i][0].ToString());
+                    int y = int.Parse(stoneCordinates[i][2].ToString());
+                    grid[x, y] = Constant.STONE;
+                }
+
+                String[] waterCordinates = arr[4].Split(';');
+                for (int i = 0; i < waterCordinates.Length; i++)
+                {
+                    int x = int.Parse(waterCordinates[i][0].ToString());
+                    int y = int.Parse(waterCordinates[i][2].ToString());
+                    grid[x, y] = Constant.WATER;
+                }
+
             }
             else if(data==Constant.S2C_GAMESTARTED)
             {
