@@ -94,19 +94,14 @@ namespace Game_Client
                 // and specify the port.
                 tcpListener = new TcpListener(ipAddress, listenPort);
                 tcpListener.Start();
+                thread = new Thread(new ThreadStart(Recieve));
+                thread.Start();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Failed to start listener {0}", e.ToString());
                 return;
             }
-            finally
-            {
-
-                thread = new Thread(new ThreadStart(Recieve));
-                thread.Start();
-            }
-
         }
 
         public void Recieve()

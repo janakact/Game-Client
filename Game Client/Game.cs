@@ -27,9 +27,10 @@ namespace Game_Client
 
       
             }
-            grid[1, 2] = "W";
-            grid[5, 3] = "S";
-            grid[9, 9] = "B";
+            grid[1, 2] = Constant.WATER;
+            grid[5, 3] = Constant.STONE;
+            grid[9, 9] = Constant.BRICK;
+
             networkClient = new NetworkClient(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
             networkClient.OnRecieve += onRecieve;
 
@@ -134,9 +135,9 @@ namespace Game_Client
                 for (int j = 0; j < 10; j++)
                 {
                     Brush b = brushEmpty;
-                    if (grid[i, j] == "W") b = brushWater;
-                    if (grid[i, j] == "S") b = brushStone;
-                    if (grid[i, j] == "B") b = brushBrick;
+                    if (grid[i, j] == Constant.WATER) b = brushWater;
+                    if (grid[i, j] == Constant.STONE) b = brushStone;
+                    if (grid[i, j] == Constant.BRICK) b = brushBrick;
                     formGraphics.FillRectangle(b, new Rectangle(i * 20 + offsetX, j * 20 + offsetY, 10, 10));
 
                 }
