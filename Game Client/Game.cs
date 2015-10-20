@@ -13,18 +13,23 @@ namespace Game_Client
     public partial class Game : Form
     {
         private NetworkClient networkClient;
-        private char[,] grid;
+        private string[,] grid;
 
         public Game()
         {
             InitializeComponent();
 
-            grid = new char[10, 10];
+            grid = new string[10, 10];
             for(int i =0; i<10;i++)
             {
                 for (int j = 0; j < 10; j++)
-                    grid[i, j] = 'N';
+                    grid[i, j] = "N";
+
+      
             }
+            grid[1, 2] = "W";
+            grid[5, 3] = "S";
+            grid[9, 9] = "B";
             networkClient = new NetworkClient(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
             networkClient.OnRecieve += onRecieve;
 
@@ -81,24 +86,68 @@ namespace Game_Client
 
         private void processRecievedMsg(String data)
         {
+            //To Pani - update the grid[] as required.
+            //This is the parser. add if conditions to identify messages and do the required process
+
+            if(data.Length<2) //Pre test for invalid messages :: Improve the condition
+            {
+                //Invalid message
+                return;
+            }
+
             if (data.Substring(0,2)=="I:")
             {
+                //Game init 
                 String[] arr = data.Split(':');
-
+                //Update the grid
             }
-            if(data==Constant.S2C_GAMESTARTED)
+            else if(data==Constant.S2C_GAMESTARTED)
             {
-
+                //Game started
+            }
+            //Add others
+            else
+            {
+                //Messages which can't be recognized
             }
 
-            String txt = "";
-            for(int i=0; i<10; i++)
+            updateInterface();
+
+        }
+
+        public void updateInterface()
+        {
+            int offsetX = 30,
+                offsetY = 300;
+            System.Drawing.Pen pen;
+            pen = new System.Drawing.Pen(System.Drawing.Color.Red);
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            formGraphics.DrawLine(pen, 0, 0, 200, 200);
+
+            System.Drawing.SolidBrush brushEmpty = new System.Drawing.SolidBrush(System.Drawing.Color.White);
+            System.Drawing.SolidBrush brushWater = new System.Drawing.SolidBrush(System.Drawing.Color.CadetBlue);
+            System.Drawing.SolidBrush brushStone = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+            System.Drawing.SolidBrush brushBrick = new System.Drawing.SolidBrush(System.Drawing.Color.Brown);
+            
+            for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
-                    txt += grid[i, j];
-                txt += "\r\n";
+                {
+                    Brush b = brushEmpty;
+                    if (grid[i, j] == "W") b = brushWater;
+                    if (grid[i, j] == "S") b = brushStone;
+                    if (grid[i, j] == "B") b = brushBrick;
+                    formGraphics.FillRectangle(b, new Rectangle(i * 20 + offsetX, j * 20 + offsetY, 10, 10));
+
+                }
             }
-            txtGrid.Text = txt;
+            pen.Dispose();
+            formGraphics.Dispose();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            processRecievedMsg(txtMsg.Text);
         }
     }
 }

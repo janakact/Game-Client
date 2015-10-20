@@ -46,11 +46,11 @@ namespace Game_Client
         #endregion
 
         #region  "Grid values"
-        public const char WATER = 'W';
-        public const char BRICK = 'B';
-        public const char STONE = 'S';
+        public const string WATER = "W";
+        public const string BRICK = "B";
+        public const string STONE = "S";
 
-        public const char COIN = 'C';
+        public const string COIN = "C";
         #endregion
     }
 }

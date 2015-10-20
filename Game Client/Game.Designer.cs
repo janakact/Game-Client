@@ -33,7 +33,8 @@
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.txtSend = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.txtGrid = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtMsg = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnStartClient
@@ -83,20 +84,31 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // txtGrid
+            // button1
             // 
-            this.txtGrid.Location = new System.Drawing.Point(12, 294);
-            this.txtGrid.Multiline = true;
-            this.txtGrid.Name = "txtGrid";
-            this.txtGrid.Size = new System.Drawing.Size(304, 235);
-            this.txtGrid.TabIndex = 7;
+            this.button1.Location = new System.Drawing.Point(492, 284);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(114, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Process Msg";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // txtMsg
+            // 
+            this.txtMsg.Location = new System.Drawing.Point(12, 286);
+            this.txtMsg.Name = "txtMsg";
+            this.txtMsg.Size = new System.Drawing.Size(473, 20);
+            this.txtMsg.TabIndex = 9;
             // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(652, 541);
-            this.Controls.Add(this.txtGrid);
+            this.Controls.Add(this.txtMsg);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtSend);
             this.Controls.Add(this.txtConsole);
@@ -118,7 +130,8 @@
         private System.Windows.Forms.TextBox txtConsole;
         private System.Windows.Forms.TextBox txtSend;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.TextBox txtGrid;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtMsg;
     }
 }
 
