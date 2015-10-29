@@ -45,11 +45,23 @@ namespace Game_Client
         //For listening 
         TcpListener tcpListener;
         Thread thread;
+        bool recieving = false;
+
+        //Instance
+        private static NetworkClient instance;
 
         //When data recieved 'event'
         public event EventHandler<DataRecieveEventArgs> OnRecieve;
 
-        public NetworkClient(string ipAddress, int sendPort, int listenPort)
+        public static NetworkClient getInstance(string ipAddress, int sendPort, int listenPort)
+        {
+            if(instance==null)
+            {
+                instance = new NetworkClient(ipAddress, sendPort, listenPort);
+            }
+            return instance;
+        }
+        private NetworkClient(string ipAddress, int sendPort, int listenPort)
         {
             this.ipAddress = IPAddress.Parse(ipAddress);
             this.sendPort = sendPort;
@@ -95,6 +107,7 @@ namespace Game_Client
                 tcpListener = new TcpListener(ipAddress, listenPort);
                 tcpListener.Start();
                 thread = new Thread(new ThreadStart(Recieve));
+                recieving = true;
                 thread.Start();
             }
             catch (Exception e)
@@ -106,28 +119,35 @@ namespace Game_Client
 
         public void Recieve()
         {
-            while (true)
+            while (recieving)
             {
-                // Always use a Sleep call in a while(true) loop 
-                // to avoid locking up your CPU.
-                Thread.Sleep(10);
-                // Create a TCP socket. 
-                // If you ran this server on the desktop, you could use 
-                // Socket socket = tcpListener.AcceptSocket() 
-                // for greater flexibility.
-                TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                // Read the data stream from the client. 
-                byte[] bytes = new byte[256];
-                NetworkStream stream = tcpClient.GetStream();
-                stream.Read(bytes, 0, bytes.Length);
-                string msg =  Encoding.ASCII.GetString(bytes);
-                RaiseOnRecieve(new DataRecieveEventArgs(msg));
+                try {
+                    // Always use a Sleep call in a while(true) loop 
+                    // to avoid locking up your CPU.
+                    Thread.Sleep(10);
+                    // Create a TCP socket. 
+                    // If you ran this server on the desktop, you could use 
+                    // Socket socket = tcpListener.AcceptSocket() 
+                    // for greater flexibility.
+                    TcpClient tcpClient = tcpListener.AcceptTcpClient();
+                    // Read the data stream from the client. 
+                    byte[] bytes = new byte[256];
+                    NetworkStream stream = tcpClient.GetStream();
+                    stream.Read(bytes, 0, bytes.Length);
+                    string msg = Encoding.ASCII.GetString(bytes);
+                    RaiseOnRecieve(new DataRecieveEventArgs(msg));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Recive Error: {0}", e.ToString());
+                }
             }
         }
 
-        public void Send( string data)
+        public void Send(string data)
         {
-            try {
+            try
+            {
 
                 tcpClient = new TcpClient();
                 tcpClient.Connect(ipAddress, sendPort);
@@ -142,17 +162,18 @@ namespace Game_Client
                     stream.Close();
                 }
             }
-            catch( Exception e)
+            catch (Exception e)
             {
-                Console.WriteLine("Sending failed : {0}",e.ToString());
-            }            
+                Console.WriteLine("Sending failed : {0}", e.ToString());
+            }
         }
 
         public void StopListening()
         {
-            try {
+            try
+            {
 
-                thread.Abort();
+                recieving = false;
                 tcpListener.Stop();
             }
             catch (Exception e)
