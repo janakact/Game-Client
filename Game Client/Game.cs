@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,32 +15,36 @@ namespace Game_Client
     {
         private NetworkClient networkClient;
         private string[,] grid;
-        private String [] players;
-
+        Player[] players;// = new List<Player>();
+        private Player thisPlayer;
+           
+         
         public Game()
         {
             InitializeComponent();
-            players = new String[5];
+
+            players = new Player[5];
+            thisPlayer = new Player();
+
+            //initializing the list
+            for (int i = 0; i < 5; i++) { players[i] = new Player(); }
             grid = new string[10, 10];
             for(int i =0; i<10;i++)
             {
                 for (int j = 0; j < 10; j++)
                     grid[i, j] = "N";
 
-      
             }
-            //grid[1, 2] = Constant.WATER;
-            //grid[5, 3] = Constant.STONE;
-            //grid[9, 9] = Constant.BRICK;
-
-            networkClient = new NetworkClient(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
+            
+            networkClient =  NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
             networkClient.OnRecieve += onRecieve;
 
         }
 
         private void btnStartClient_Click(object sender, EventArgs e)
         {
-            networkClient.StopListening();   
+            networkClient.StopListening();
+            send("JOIN#");
             networkClient.StartListening();
             
         }
@@ -64,6 +69,7 @@ namespace Game_Client
         private void Form1_Load(object sender, EventArgs e)
         {
 
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -73,7 +79,7 @@ namespace Game_Client
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            networkClient.Send(txtSend.Text);
+            send(txtSend.Text);
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -102,8 +108,12 @@ namespace Game_Client
                 //Game init 
                 String[] arr = data.Split(':');
 
-                //Add players---------------------
-
+                //Player details---------------------
+                thisPlayer.name = arr[1];
+                players[int.Parse(arr[1][1].ToString())]= thisPlayer;
+                
+                //Console.WriteLine(thisPlayer.name);
+                //Console.WriteLine(players[1].name);
 
 
                 //Add bricks,stones,water------------
@@ -131,7 +141,56 @@ namespace Game_Client
                 }
 
             }
-            else if(data==Constant.S2C_GAMESTARTED)
+            //Console.WriteLine(thisPlayer.name);
+            if (data.Substring(0, 2) == "S:")
+            {
+                String[] arr = data.Split(':',';' );
+
+                thisPlayer.locationX = int.Parse(arr[2][0].ToString());
+                thisPlayer.locationY = int.Parse(arr[2][2].ToString());
+                thisPlayer.direction = int.Parse(arr[3][0].ToString());
+
+                //Console.WriteLine(thisPlayer.name);
+                //Console.WriteLine(thisPlayer.locationX);
+                //Console.WriteLine(thisPlayer.locationY);
+                //Console.WriteLine(thisPlayer.direction);
+            }
+
+            if (data.Substring(0, 2) == "G:")
+            {
+                String[] arr = data.Split(':');
+
+                for (int i = 0; i < arr.Length; i++) {
+                    if (arr[i][0] == 'P')
+                    {
+                        String[] details = arr[i].Split(';');
+                        int j = int.Parse(details[0][1].ToString());
+                            if (j <5 && j>=0 )
+                            {
+                                if (players[j] == null)
+                                    players[j] = new Player();
+                                players[j].name = details[0];
+                                players[j].locationX = int.Parse(details[1][0].ToString());
+                                players[j].locationY = int.Parse(details[1][2].ToString());
+                                players[j].direction = int.Parse(details[2][0].ToString());
+                                players[j].isShot = int.Parse(details[3][0].ToString());
+                                players[j].health = int.Parse(details[4]);
+                                players[j].coins = int.Parse(details[5]);
+                                players[j].points = int.Parse(details[6]);
+                                Console.WriteLine(players[j].name);
+                                Console.WriteLine(players[j].locationX);
+                                Console.WriteLine(players[j].locationY);
+                                Console.WriteLine(players[j].direction);
+                            }
+                    }
+
+                }
+                
+
+            }
+
+
+            else if (data == Constant.S2C_GAMESTARTED)
             {
                 //Game started
             }
@@ -181,6 +240,13 @@ namespace Game_Client
         private void button1_Click(object sender, EventArgs e)
         {
             processRecievedMsg(txtMsg.Text);
+        }
+
+        public void send(string data)
+        {
+            networkClient.Send(data);
+            txtConsole.AppendText(data);
+            txtConsole.AppendText("\n");
         }
     }
 }
