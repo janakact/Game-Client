@@ -35,11 +35,12 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.txtMsg = new System.Windows.Forms.TextBox();
+            this.panelGrid = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // btnStartClient
             // 
-            this.btnStartClient.Location = new System.Drawing.Point(383, 12);
+            this.btnStartClient.Location = new System.Drawing.Point(555, 12);
             this.btnStartClient.Name = "btnStartClient";
             this.btnStartClient.Size = new System.Drawing.Size(125, 23);
             this.btnStartClient.TabIndex = 0;
@@ -49,7 +50,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(514, 12);
+            this.btnStop.Location = new System.Drawing.Point(686, 12);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(92, 23);
             this.btnStop.TabIndex = 1;
@@ -63,7 +64,7 @@
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(594, 175);
+            this.txtConsole.Size = new System.Drawing.Size(766, 175);
             this.txtConsole.TabIndex = 2;
             this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
             // 
@@ -86,7 +87,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(492, 251);
+            this.button1.Location = new System.Drawing.Point(664, 545);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(114, 23);
             this.button1.TabIndex = 8;
@@ -96,17 +97,25 @@
             // 
             // txtMsg
             // 
-            this.txtMsg.Location = new System.Drawing.Point(12, 253);
+            this.txtMsg.Location = new System.Drawing.Point(12, 545);
             this.txtMsg.Name = "txtMsg";
-            this.txtMsg.Size = new System.Drawing.Size(473, 20);
+            this.txtMsg.Size = new System.Drawing.Size(646, 20);
             this.txtMsg.TabIndex = 9;
+            // 
+            // panelGrid
+            // 
+            this.panelGrid.Location = new System.Drawing.Point(12, 248);
+            this.panelGrid.Name = "panelGrid";
+            this.panelGrid.Size = new System.Drawing.Size(298, 291);
+            this.panelGrid.TabIndex = 10;
             // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(615, 541);
+            this.ClientSize = new System.Drawing.Size(790, 577);
+            this.Controls.Add(this.panelGrid);
             this.Controls.Add(this.txtMsg);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnSend);
@@ -132,6 +141,7 @@
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtMsg;
+        private System.Windows.Forms.Panel panelGrid;
     }
 }
 
