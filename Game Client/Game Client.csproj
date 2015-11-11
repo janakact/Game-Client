@@ -61,21 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Coin.cs" />
-    <Compile Include="LifePack.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Components.cs" />
     <Compile Include="Constant.cs" />
-    <Compile Include="Game.cs">
+    <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Game.Designer.cs">
-      <DependentUpon>Game.cs</DependentUpon>
+    <Compile Include="GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NetworkClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Game.resx">
-      <DependentUpon>Game.cs</DependentUpon>
+    <EmbeddedResource Include="GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

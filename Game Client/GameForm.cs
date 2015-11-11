@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Game_Client
 {
-    public partial class Game : Form
+    public partial class GameForm : Form
     {
         private NetworkClient networkClient;
         private string[,] grid;
@@ -20,7 +20,7 @@ namespace Game_Client
         private List<Coin> coins;
         private List<LifePack> lifePacks;
 
-        public Game()
+        public GameForm()
         {
             InitializeComponent();
 

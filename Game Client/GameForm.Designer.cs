@@ -1,6 +1,6 @@
 ﻿namespace Game_Client
 {
-    partial class Game
+    partial class GameForm
     {
         /// <summary>
         /// Required designer variable.
