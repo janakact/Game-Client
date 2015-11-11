@@ -230,12 +230,15 @@ namespace Game_Client
 
         public void updateInterface()
         {
-            int offsetX = 30,
-                offsetY = 300;
-            System.Drawing.Pen pen;
-            pen = new System.Drawing.Pen(System.Drawing.Color.Red);
-            System.Drawing.Graphics formGraphics = this.CreateGraphics();
-            formGraphics.DrawLine(pen, 0, 0, 200, 200);
+            int offsetX = 0,
+                offsetY = 0,
+                height = panelGrid.Height / 10,
+                width = panelGrid.Width/10;
+          
+            //System.Drawing.Pen pen;
+            //pen = new System.Drawing.Pen(System.Drawing.Color.Red);
+            System.Drawing.Graphics formGraphics = panelGrid.CreateGraphics();
+            //formGraphics.DrawLine(pen, 0, 0, 200, 200);
 
             System.Drawing.SolidBrush brushEmpty = new System.Drawing.SolidBrush(System.Drawing.Color.White);
             System.Drawing.SolidBrush brushWater = new System.Drawing.SolidBrush(System.Drawing.Color.CadetBlue);
@@ -250,11 +253,11 @@ namespace Game_Client
                     if (grid[i, j] == Constant.WATER) b = brushWater;
                     if (grid[i, j] == Constant.STONE) b = brushStone;
                     if (grid[i, j] == Constant.BRICK) b = brushBrick;
-                    formGraphics.FillRectangle(b, new Rectangle(i * 20 + offsetX, j * 20 + offsetY, 10, 10));
+                    formGraphics.FillRectangle(b, new Rectangle(i * (width) + offsetX, j * height + offsetY,width-5, height-5));
 
                 }
             }
-            pen.Dispose();
+            //pen.Dispose();
             formGraphics.Dispose();
         }
 
