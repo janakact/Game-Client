@@ -20,7 +20,6 @@ namespace Game_Client
         {
             InitializeComponent();
             game = new Game();
-            
             networkClient =  NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT,Constant.LISTEN_PORT);
             networkClient.OnRecieve += onRecieve;
 
@@ -82,35 +81,9 @@ namespace Game_Client
 
         public void updateInterface()
         {
-            int offsetX = 0,
-                offsetY = 0,
-                height = panelGrid.Height / 10,
-                width = panelGrid.Width/10;
-          
-            //System.Drawing.Pen pen;
-            //pen = new System.Drawing.Pen(System.Drawing.Color.Red);
-            System.Drawing.Graphics formGraphics = panelGrid.CreateGraphics();
-            //formGraphics.DrawLine(pen, 0, 0, 200, 200);
-
-            System.Drawing.SolidBrush brushEmpty = new System.Drawing.SolidBrush(System.Drawing.Color.White);
-            System.Drawing.SolidBrush brushWater = new System.Drawing.SolidBrush(System.Drawing.Color.CadetBlue);
-            System.Drawing.SolidBrush brushStone = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
-            System.Drawing.SolidBrush brushBrick = new System.Drawing.SolidBrush(System.Drawing.Color.Brown);
-            
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    Brush b = brushEmpty;
-                    if (game.grid[i, j] == Constant.WATER) b = brushWater;
-                    if (game.grid[i, j] == Constant.STONE) b = brushStone;
-                    if (game.grid[i, j] == Constant.BRICK) b = brushBrick;
-                    formGraphics.FillRectangle(b, new Rectangle(i * (width) + offsetX, j * height + offsetY,width-5, height-5));
-
-                }
-            }
-            //pen.Dispose();
-            formGraphics.Dispose();
+            //New method
+            GraphicsManager g = new GraphicsManager(panelGrid.CreateGraphics(),panelGrid.Height,panelGrid.Width);
+            g.draw(game);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -124,6 +97,11 @@ namespace Game_Client
             networkClient.Send(data);
             txtConsole.AppendText(data);
             txtConsole.AppendText("\n");
+        }
+
+        private void panelGrid_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

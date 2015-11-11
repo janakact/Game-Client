@@ -13,6 +13,7 @@ namespace Game_Client
         public Player thisPlayer;
         public List<Coin> coins;
         public List<LifePack> lifePacks;
+        public List<Block> blocks;
         
         public Game()
         {
@@ -20,6 +21,7 @@ namespace Game_Client
             thisPlayer = new Player();
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
+            blocks = new List<Block>();
 
             //initializing the list
             for (int i = 0; i < 5; i++) { players[i] = new Player(); }
@@ -36,6 +38,7 @@ namespace Game_Client
         }
 
         public void processMsg(String data)
+
         {
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process
@@ -65,6 +68,7 @@ namespace Game_Client
                 {
                     int x = int.Parse(brickCordinates[i][0].ToString());
                     int y = int.Parse(brickCordinates[i][2].ToString());
+                    blocks.Add(new Brick(x, y,100));
                     grid[x, y] = Constant.BRICK;
                 }
 
@@ -73,6 +77,7 @@ namespace Game_Client
                 {
                     int x = int.Parse(stoneCordinates[i][0].ToString());
                     int y = int.Parse(stoneCordinates[i][2].ToString());
+                    blocks.Add(new Stone(x, y));
                     grid[x, y] = Constant.STONE;
                 }
 
@@ -81,6 +86,7 @@ namespace Game_Client
                 {
                     int x = int.Parse(waterCordinates[i][0].ToString());
                     int y = int.Parse(waterCordinates[i][2].ToString());
+                    blocks.Add(new Water(x, y));
                     grid[x, y] = Constant.WATER;
                 }
 
@@ -90,8 +96,8 @@ namespace Game_Client
             {
                 String[] arr = data.Split(':', ';', '#');
 
-                thisPlayer.locationX = int.Parse(arr[2][0].ToString());
-                thisPlayer.locationY = int.Parse(arr[2][2].ToString());
+                thisPlayer.x = int.Parse(arr[2][0].ToString());
+                thisPlayer.y = int.Parse(arr[2][2].ToString());
                 thisPlayer.direction = int.Parse(arr[3][0].ToString());
 
 
@@ -102,8 +108,8 @@ namespace Game_Client
                 String[] arr = data.Split(':', '#');
 
                 Coin c = new Coin();
-                c.xCordinate = int.Parse(arr[1][0].ToString());
-                c.yCordinate = int.Parse(arr[1][2].ToString());
+                c.x = int.Parse(arr[1][0].ToString());
+                c.y = int.Parse(arr[1][2].ToString());
                 c.lifeTime = int.Parse(arr[2]);
                 c.value = int.Parse(arr[3]);
 
@@ -114,8 +120,8 @@ namespace Game_Client
             {
                 String[] arr = data.Split(':', '#');
                 LifePack l = new LifePack();
-                l.xCordinate = int.Parse(arr[1][0].ToString());
-                l.yCordinate = int.Parse(arr[1][2].ToString());
+                l.x = int.Parse(arr[1][0].ToString());
+                l.y = int.Parse(arr[1][2].ToString());
                 l.lifeTime = int.Parse(arr[2]);
 
                 lifePacks.Add(l);
@@ -137,8 +143,8 @@ namespace Game_Client
                             if (players[j] == null)
                                 players[j] = new Player();
                             players[j].name = details[0];
-                            players[j].locationX = int.Parse(details[1][0].ToString());
-                            players[j].locationY = int.Parse(details[1][2].ToString());
+                            players[j].x = int.Parse(details[1][0].ToString());
+                            players[j].y = int.Parse(details[1][2].ToString());
                             players[j].direction = int.Parse(details[2][0].ToString());
                             players[j].isShot = int.Parse(details[3][0].ToString());
                             players[j].health = int.Parse(details[4]);

@@ -108,8 +108,9 @@
             this.panelGrid.Name = "panelGrid";
             this.panelGrid.Size = new System.Drawing.Size(298, 291);
             this.panelGrid.TabIndex = 10;
+            this.panelGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.panelGrid_Paint);
             // 
-            // Game
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -123,7 +124,7 @@
             this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStartClient);
-            this.Name = "Game";
+            this.Name = "GameForm";
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
