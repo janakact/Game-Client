@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coin.cs" />
+    <Compile Include="LifePack.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="Game.cs">

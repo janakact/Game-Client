@@ -15,20 +15,25 @@ namespace Game_Client
     {
         private NetworkClient networkClient;
         private string[,] grid;
-        Player[] players;// = new List<Player>();
+        private Player[] players;// = new List<Player>();
         private Player thisPlayer;
-           
-         
+        private List<Coin> coins;
+        private List<LifePack> lifePacks;
+
         public Game()
         {
             InitializeComponent();
 
             players = new Player[5];
             thisPlayer = new Player();
+            coins = new List<Coin>();
+            lifePacks = new List<LifePack>();
 
             //initializing the list
             for (int i = 0; i < 5; i++) { players[i] = new Player(); }
+
             grid = new string[10, 10];
+            
             for(int i =0; i<10;i++)
             {
                 for (int j = 0; j < 10; j++)
@@ -106,7 +111,7 @@ namespace Game_Client
             if (data.Substring(0,2)=="I:")
             {
                 //Game init 
-                String[] arr = data.Split(':');
+                String[] arr = data.Split(':','#');
 
                 //Player details---------------------
                 thisPlayer.name = arr[1];
@@ -144,21 +149,43 @@ namespace Game_Client
             //Console.WriteLine(thisPlayer.name);
             if (data.Substring(0, 2) == "S:")
             {
-                String[] arr = data.Split(':',';' );
+                String[] arr = data.Split(':',';','#' );
 
                 thisPlayer.locationX = int.Parse(arr[2][0].ToString());
                 thisPlayer.locationY = int.Parse(arr[2][2].ToString());
                 thisPlayer.direction = int.Parse(arr[3][0].ToString());
 
-                //Console.WriteLine(thisPlayer.name);
-                //Console.WriteLine(thisPlayer.locationX);
-                //Console.WriteLine(thisPlayer.locationY);
-                //Console.WriteLine(thisPlayer.direction);
+               
             }
+
+            if (data.Substring(0, 2) == "C:")
+            {
+                String[] arr = data.Split(':','#');
+
+                Coin c = new Coin();
+                c.xCordinate = int.Parse(arr[1][0].ToString());
+                c.yCordinate = int.Parse(arr[1][2].ToString());
+                c.lifeTime = int.Parse(arr[2]);
+                c.value = int.Parse(arr[3]);
+
+                coins.Add(c);
+            }
+
+            if (data.Substring(0, 2) == "L:")
+            {
+                String[] arr = data.Split(':', '#');
+                LifePack l = new LifePack();
+                l.xCordinate = int.Parse(arr[1][0].ToString());
+                l.yCordinate = int.Parse(arr[1][2].ToString());
+                l.lifeTime = int.Parse(arr[2]);
+
+                lifePacks.Add(l);
+            }
+
 
             if (data.Substring(0, 2) == "G:")
             {
-                String[] arr = data.Split(':');
+                String[] arr = data.Split(':','#');
 
                 for (int i = 0; i < arr.Length; i++) {
                     if (arr[i][0] == 'P')
@@ -177,10 +204,7 @@ namespace Game_Client
                                 players[j].health = int.Parse(details[4]);
                                 players[j].coins = int.Parse(details[5]);
                                 players[j].points = int.Parse(details[6]);
-                                Console.WriteLine(players[j].name);
-                                Console.WriteLine(players[j].locationX);
-                                Console.WriteLine(players[j].locationY);
-                                Console.WriteLine(players[j].direction);
+                               
                             }
                     }
 
